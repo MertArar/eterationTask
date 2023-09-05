@@ -279,11 +279,12 @@ const ProductList = () => {
               />
             ))}
           </div>
-          <TotalPrices selectedProducts={selectedProducts} />
+
           <SelectedProduct
             selectedProducts={selectedProducts}
             handleQuantityChange={handleQuantityChange}
           />
+          <TotalPrices selectedProducts={selectedProducts} />
           <div className="flex justify-center mt-4">
             {Array.from(
               { length: Math.ceil(filteredProducts.length / productsPerPage) },
