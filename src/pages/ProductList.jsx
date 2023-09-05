@@ -23,9 +23,7 @@ const ProductList = () => {
     endDate: null,
     minPrice: null,
     maxPrice: null,
-    brand: "",
-    model: "",
-    selectedBrands: [],
+    selectedNames: [], // Değişen isimler için yeni bir state ekledik.
   });
 
   const [selectedModel, setSelectedModel] = useState("");
@@ -79,17 +77,10 @@ const ProductList = () => {
         );
       }
 
-      // Markayı filtrele
-      if (filterCriteria.brand) {
-        filtered = filtered.filter(
-          (product) => product.brand === filterCriteria.brand
-        );
-      }
-
-      // Seçilen markaları filtrele
-      if (filterCriteria.selectedBrands.length > 0) {
+      // Seçilen isimlere göre filtrele
+      if (filterCriteria.selectedNames.length > 0) {
         filtered = filtered.filter((product) =>
-          filterCriteria.selectedBrands.includes(product.brand)
+          filterCriteria.selectedNames.includes(product.name)
         );
       }
 
@@ -116,17 +107,17 @@ const ProductList = () => {
     setSelectedProducts(updatedSelectedProducts);
   };
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  const handleBrandSelect = (brand) => {
-    const selectedBrands = [...filterCriteria.selectedBrands];
-    if (selectedBrands.includes(brand)) {
-      selectedBrands.splice(selectedBrands.indexOf(brand), 1);
+  const handleNameSelect = (name) => {
+    const selectedNames = [...filterCriteria.selectedNames];
+    if (selectedNames.includes(name)) {
+      selectedNames.splice(selectedNames.indexOf(name), 1);
     } else {
-      selectedBrands.push(brand);
+      selectedNames.push(name);
     }
-    setFilterCriteria({ ...filterCriteria, selectedBrands });
+    setFilterCriteria({ ...filterCriteria, selectedNames });
   };
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleModelSelect = (model) => {
     setSelectedModel(model);
@@ -169,7 +160,7 @@ const ProductList = () => {
       <div className="flex flex-wrap">
         <div className="w-full md:w-1/4 p-4">
           {/* Sort By Kartı */}
-          <div className="bg-white p-4 rounded shadow">
+          <div className="bg-white p-4 rounded shadow w-[220px]">
             <h2 className="text-lg font-semibold mb-2">Sort By</h2>
             <div className="mb-2">
               <input
@@ -179,7 +170,7 @@ const ProductList = () => {
                 onChange={() => handleSortOptionChange("priceLowToHigh")}
               />
               <label htmlFor="priceLowToHigh" className="ml-2">
-                Fiyat Düşükten Yükseğe
+                Price low to high
               </label>
             </div>
             <div className="mb-2">
@@ -190,7 +181,7 @@ const ProductList = () => {
                 onChange={() => handleSortOptionChange("priceHighToLow")}
               />
               <label htmlFor="priceHighToLow" className="ml-2">
-                Fiyat Yüksekten Düşüğe
+                Price high to low
               </label>
             </div>
             <div className="mb-2">
@@ -201,7 +192,7 @@ const ProductList = () => {
                 onChange={() => handleSortOptionChange("dateNewToOld")}
               />
               <label htmlFor="dateNewToOld" className="ml-2">
-                Yeniden Eskiye
+                New to Old
               </label>
             </div>
             <div className="mb-2">
@@ -212,29 +203,29 @@ const ProductList = () => {
                 onChange={() => handleSortOptionChange("dateOldToNew")}
               />
               <label htmlFor="dateOldToNew" className="ml-2">
-                Eskiden Yeniye
+                Old to New
               </label>
             </div>
           </div>
 
-          {/* Markalar Kartı */}
-          <div className="bg-white p-4 rounded shadow mt-4">
+          {/* Ürün İsimleri Kartı */}
+          <div className="bg-white p-4 rounded shadow mt-4 w-[220px]">
             <h2 className="text-lg font-semibold mb-2">Brands</h2>
             <div className="overflow-y-auto max-h-36">
               {products.map((product) => (
                 <div key={product.id} className="mb-2">
                   <input
                     type="checkbox"
-                    id={product.brand}
-                    name={product.brand}
-                    value={product.brand}
-                    checked={filterCriteria.selectedBrands.includes(
-                      product.brand
+                    id={product.name}
+                    name={product.name}
+                    value={product.name}
+                    checked={filterCriteria.selectedNames.includes(
+                      product.name
                     )}
-                    onChange={() => handleBrandSelect(product.brand)}
+                    onChange={() => handleNameSelect(product.name)}
                   />
-                  <label htmlFor={product.brand} className="ml-2">
-                    {product.brand}
+                  <label htmlFor={product.name} className="ml-2">
+                    {product.name}
                   </label>
                 </div>
               ))}
@@ -242,7 +233,7 @@ const ProductList = () => {
           </div>
 
           {/* Modeller Kartı */}
-          <div className="bg-white p-4 rounded shadow mt-4">
+          <div className="bg-white p-4 rounded shadow mt-4 w-[220px]">
             <h2 className="text-lg font-semibold mb-2">Model</h2>
             <div className="overflow-y-auto max-h-36">
               {Array.from(
@@ -264,13 +255,11 @@ const ProductList = () => {
               ))}
             </div>
           </div>
-
-          {/* Diğer filtre kartları burada ekleyin */}
         </div>
 
-        <div className="w-full md:w-3/4 p-4">
+        <div className="ml-[-200px] md:w-3/4 p-0">
           {/* Ürünlerin Listesi ve Sayfalama burada */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4  ">
             {currentProducts.map((product) => (
               <ProductCard
                 key={product.id}
@@ -285,25 +274,26 @@ const ProductList = () => {
             handleQuantityChange={handleQuantityChange}
           />
           <TotalPrices selectedProducts={selectedProducts} />
-          <div className="flex justify-center mt-4">
-            {Array.from(
-              { length: Math.ceil(filteredProducts.length / productsPerPage) },
-              (_, i) => (
-                <button
-                  key={i}
-                  onClick={() => paginate(i + 1)}
-                  className={`mx-2 p-2 rounded-full ${
-                    i + 1 === currentPage
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-300"
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              )
-            )}
-          </div>
+
+          {/* </div> */}
         </div>
+      </div>
+
+      <div className="flex justify-center mt-4">
+        {Array.from(
+          { length: Math.ceil(filteredProducts.length / productsPerPage) },
+          (_, i) => (
+            <button
+              key={i}
+              onClick={() => paginate(i + 1)}
+              className={`mx-2 p-2 rounded-lg ${
+                i + 1 === currentPage ? "bg-white text-[#2A59FE]" : ""
+              }`}
+            >
+              {i + 1}
+            </button>
+          )
+        )}
       </div>
     </div>
   );
