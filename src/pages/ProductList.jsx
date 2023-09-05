@@ -8,7 +8,13 @@ const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
 
-  const [sortOption, setSortOption] = useState("default");
+  const [sortOptions, setSortOptions] = useState({
+    priceLowToHigh: false,
+    priceHighToLow: false,
+    dateNewToOld: false,
+    dateOldToNew: false,
+  });
+
   const [filterCriteria, setFilterCriteria] = useState({
     startDate: null,
     endDate: null,
@@ -33,15 +39,18 @@ const ProductList = () => {
   useEffect(() => {
     const sortProducts = () => {
       let sorted = [...filteredProducts];
-      if (sortOption === "priceLowToHigh") {
+      if (sortOptions.priceLowToHigh) {
         sorted = sorted.sort((a, b) => a.price - b.price);
-      } else if (sortOption === "priceHighToLow") {
+      }
+      if (sortOptions.priceHighToLow) {
         sorted = sorted.sort((a, b) => b.price - a.price);
-      } else if (sortOption === "dateNewToOld") {
+      }
+      if (sortOptions.dateNewToOld) {
         sorted = sorted.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
-      } else if (sortOption === "dateOldToNew") {
+      }
+      if (sortOptions.dateOldToNew) {
         sorted = sorted.sort(
           (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
         );
@@ -50,58 +59,32 @@ const ProductList = () => {
     };
 
     sortProducts();
-  }, [sortOption, filteredProducts]);
+  }, [sortOptions, filteredProducts]);
 
   useEffect(() => {
     const filterProducts = () => {
       let filtered = products;
 
-      if (filterCriteria.startDate) {
+      // Diğer filtreleme kriterleri burada...
+
+      // Modeli filtrele
+      if (selectedModel) {
         filtered = filtered.filter(
-          (product) => new Date(product.createdAt) >= filterCriteria.startDate
+          (product) => product.model === selectedModel
         );
       }
 
-      if (filterCriteria.endDate) {
-        filtered = filtered.filter(
-          (product) => new Date(product.createdAt) <= filterCriteria.endDate
-        );
-      }
-
-      if (filterCriteria.minPrice) {
-        filtered = filtered.filter(
-          (product) => product.price >= filterCriteria.minPrice
-        );
-      }
-
-      if (filterCriteria.maxPrice) {
-        filtered = filtered.filter(
-          (product) => product.price <= filterCriteria.maxPrice
-        );
-      }
-
+      // Markayı filtrele
       if (filterCriteria.brand) {
         filtered = filtered.filter(
           (product) => product.brand === filterCriteria.brand
         );
       }
 
-      if (filterCriteria.model) {
-        filtered = filtered.filter(
-          (product) => product.model === filterCriteria.model
-        );
-      }
-
+      // Seçilen markaları filtrele
       if (filterCriteria.selectedBrands.length > 0) {
         filtered = filtered.filter((product) =>
           filterCriteria.selectedBrands.includes(product.name)
-        );
-      }
-
-      // Modeli filtrele
-      if (selectedModel) {
-        filtered = filtered.filter(
-          (product) => product.model === selectedModel
         );
       }
 
@@ -134,28 +117,65 @@ const ProductList = () => {
     setSelectedModel(model);
   };
 
+  const handleSortOptionChange = (option) => {
+    setSortOptions({ ...sortOptions, [option]: !sortOptions[option] });
+  };
+
   return (
     <div className="flex flex-wrap">
       <div className="w-full md:w-1/4 p-4">
         {/* Sort By Kartı */}
         <div className="bg-white p-4 rounded shadow">
           <h2 className="text-lg font-semibold mb-2">Sort By</h2>
-          <select
-            value={sortOption}
-            onChange={(e) => setSortOption(e.target.value)}
-            className="w-full border p-2 rounded"
-          >
-            <option value="default">Varsayılan Sıralama</option>
-            <option value="priceLowToHigh">Fiyat Düşükten Yükseğe</option>
-            <option value="priceHighToLow">Fiyat Yüksekten Düşüğe</option>
-            <option value="dateNewToOld">Yeniden Eskiye</option>
-            <option value="dateOldToNew">Eskiden Yeniye</option>
-          </select>
+          <div className="mb-2">
+            <input
+              type="checkbox"
+              id="priceLowToHigh"
+              checked={sortOptions.priceLowToHigh}
+              onChange={() => handleSortOptionChange("priceLowToHigh")}
+            />
+            <label htmlFor="priceLowToHigh" className="ml-2">
+              Fiyat Düşükten Yükseğe
+            </label>
+          </div>
+          <div className="mb-2">
+            <input
+              type="checkbox"
+              id="priceHighToLow"
+              checked={sortOptions.priceHighToLow}
+              onChange={() => handleSortOptionChange("priceHighToLow")}
+            />
+            <label htmlFor="priceHighToLow" className="ml-2">
+              Fiyat Yüksekten Düşüğe
+            </label>
+          </div>
+          <div className="mb-2">
+            <input
+              type="checkbox"
+              id="dateNewToOld"
+              checked={sortOptions.dateNewToOld}
+              onChange={() => handleSortOptionChange("dateNewToOld")}
+            />
+            <label htmlFor="dateNewToOld" className="ml-2">
+              Yeniden Eskiye
+            </label>
+          </div>
+          <div className="mb-2">
+            <input
+              type="checkbox"
+              id="dateOldToNew"
+              checked={sortOptions.dateOldToNew}
+              onChange={() => handleSortOptionChange("dateOldToNew")}
+            />
+            <label htmlFor="dateOldToNew" className="ml-2">
+              Eskiden Yeniye
+            </label>
+          </div>
         </div>
 
         {/* Markalar Kartı */}
         <div className="bg-white p-4 rounded shadow mt-4">
-          <h2 className="text-lg font-semibold mb-2">Markalar</h2>
+          <h2 className="text-lg font-semibold mb-2">Brands</h2>
           <div className="overflow-y-auto max-h-36">
             {products.map((product) => (
               <div key={product.id} className="mb-2">
@@ -177,7 +197,7 @@ const ProductList = () => {
 
         {/* Modeller Kartı */}
         <div className="bg-white p-4 rounded shadow mt-4">
-          <h2 className="text-lg font-semibold mb-2">Modeller</h2>
+          <h2 className="text-lg font-semibold mb-2">Model</h2>
           <div className="overflow-y-auto max-h-36">
             {Array.from(new Set(products.map((product) => product.model))).map(
               (model) => (
