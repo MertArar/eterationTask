@@ -6,20 +6,19 @@ import TotalPrices from "../components/TotalPrice";
 
 import Navbar from "../components/Navbar";
 
-import axios from "axios"; // axios'ı içe aktarın
+import axios from "axios";
 
 const API_URL = "https://5fc9346b2af77700165ae514.mockapi.io/products";
 
 const ProductDetails = ({}) => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
-
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [cartUpdated, setCartUpdated] = useState(false);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        // Ürünü axios kullanarak alın
         const response = await axios.get(`${API_URL}/${productId}`);
         setProduct(response.data);
       } catch (error) {
@@ -29,10 +28,6 @@ const ProductDetails = ({}) => {
 
     fetchProductDetails();
   }, [productId]);
-
-  if (!product) {
-    return <div>Loading...</div>;
-  }
 
   const handleQuantityChange = (product, newQuantity) => {
     const updatedSelectedProducts = selectedProducts.map((p) => {
@@ -50,30 +45,58 @@ const ProductDetails = ({}) => {
     );
 
     if (selectedProductIndex === -1) {
-      // Ürün seçili değilse, yeni bir öğe olarak ekleyin
       setSelectedProducts([...selectedProducts, { ...product, quantity: 1 }]);
     } else {
-      // Ürün zaten seçiliyse, miktarını artırın
       const updatedSelectedProducts = [...selectedProducts];
       updatedSelectedProducts[selectedProductIndex].quantity += 1;
       setSelectedProducts(updatedSelectedProducts);
     }
+
+    setCartUpdated((prevCartUpdated) => !prevCartUpdated);
   };
+
+  // Conditional rendering
+  if (!product) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <Navbar walletAmount={1000} userName="Kerem" />
-      <div className="p-4">
-        <h2 className="text-xl font-semibold">{product.name}</h2>
-        <img src={product.image} alt={product.name} className="my-4" />
-        <p className="text-gray-700">{product.description}</p>
-        <p className="text-blue-500 mt-4">${product.price}</p>
+      <div className="flex flex-row justify-center items-center">
+        <div className="flex flex-row justify-center items-center mt-24 p-8 w-[1420px] bg-white shadow-lg">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="my-4 bg-cover w-[580px] h-[520px]"
+          />
+
+          <div className="flex flex-col p-8 ml-24">
+            <h2 className="text-3xl font-normal ">{product.name}</h2>
+            <p className="text-blue-500 mt-4 text-2xl mb-8">${product.price}</p>
+            <div className="flex flex-col justify-center items-center">
+              <button
+                className="bg-[#2A59FE] text-white p-2 rounded-[4px] w-[420px] flex items-center justify-center"
+                onClick={() => handleAddToCart(product)}
+              >
+                Add To Cart
+              </button>
+              <p className="text-gray-700 p-14">{product.description}</p>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-center items-center ml-10">
+          <SelectedProduct
+            selectedProducts={selectedProducts}
+            handleQuantityChange={handleQuantityChange}
+            cartUpdated={cartUpdated}
+          />
+          <TotalPrices
+            selectedProducts={selectedProducts}
+            cartUpdated={cartUpdated}
+          />
+        </div>
       </div>
-      <SelectedProduct
-        selectedProducts={selectedProducts}
-        handleQuantityChange={handleQuantityChange}
-      />
-      <TotalPrices selectedProducts={selectedProducts} />
     </>
   );
 };

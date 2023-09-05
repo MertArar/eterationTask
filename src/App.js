@@ -5,21 +5,16 @@ import ProductDetails from "./pages/ProductDetails.jsx"; // Yeni component'inizi
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          {" "}
-          {/* Switch yerine Routes kullanılır */}
-          <Route path="/" element={<ProductList />} />{" "}
-          {/* element prop kullanılır */}
-          <Route
-            path="/products/:productId"
-            element={<ProductDetails />}
-          />{" "}
-          {/* element prop kullanılır */}
-        </Routes>
-      </div>
-    </Router>
+    <>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<ProductList />} />{" "}
+            <Route path="/products/:productId" element={<ProductDetails />} />{" "}
+          </Routes>
+        </div>
+      </Router>
+    </>
   );
 }
 
