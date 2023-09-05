@@ -8,7 +8,7 @@ const ProductCard = ({ product, onAddToCart }) => {
       <div className="text-gray-600">${product.price}</div>
       <button
         onClick={() => onAddToCart(product)}
-        className="bg-blue-500 text-white px-2 py-1 mt-2"
+        className="bg-blue-500 text-white rounded px-2 py-1"
       >
         Add to Cart
       </button>

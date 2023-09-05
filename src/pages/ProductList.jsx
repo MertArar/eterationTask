@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../services/productService";
 import ProductCard from "../components/ProductCard";
+import Navbar from "../components/Navbar";
+import SelectedProduct from "../components/SelectedProduct";
+import TotalPrices from "../components/TotalPrice";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -25,7 +28,9 @@ const ProductList = () => {
     selectedBrands: [],
   });
 
-  const [selectedModel, setSelectedModel] = useState(""); // Seçilen modeli saklamak için state
+  const [selectedModel, setSelectedModel] = useState("");
+
+  const [selectedProducts, setSelectedProducts] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -84,7 +89,7 @@ const ProductList = () => {
       // Seçilen markaları filtrele
       if (filterCriteria.selectedBrands.length > 0) {
         filtered = filtered.filter((product) =>
-          filterCriteria.selectedBrands.includes(product.name)
+          filterCriteria.selectedBrands.includes(product.brand)
         );
       }
 
@@ -100,6 +105,16 @@ const ProductList = () => {
     indexOfFirstProduct,
     indexOfLastProduct
   );
+
+  const handleQuantityChange = (product, newQuantity) => {
+    const updatedSelectedProducts = selectedProducts.map((p) => {
+      if (p.id === product.id) {
+        return { ...p, quantity: newQuantity };
+      }
+      return p;
+    });
+    setSelectedProducts(updatedSelectedProducts);
+  };
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -121,86 +136,118 @@ const ProductList = () => {
     setSortOptions({ ...sortOptions, [option]: !sortOptions[option] });
   };
 
+  const searchProducts = (searchTerm) => {
+    const filtered = products.filter((product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredProducts(filtered);
+  };
+
+  const handleAddToCart = (product) => {
+    const selectedProductIndex = selectedProducts.findIndex(
+      (p) => p.id === product.id
+    );
+
+    if (selectedProductIndex === -1) {
+      // Ürün seçili değilse, yeni bir öğe olarak ekleyin
+      setSelectedProducts([...selectedProducts, { ...product, quantity: 1 }]);
+    } else {
+      // Ürün zaten seçiliyse, miktarını artırın
+      const updatedSelectedProducts = [...selectedProducts];
+      updatedSelectedProducts[selectedProductIndex].quantity += 1;
+      setSelectedProducts(updatedSelectedProducts);
+    }
+  };
+
   return (
-    <div className="flex flex-wrap">
-      <div className="w-full md:w-1/4 p-4">
-        {/* Sort By Kartı */}
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="text-lg font-semibold mb-2">Sort By</h2>
-          <div className="mb-2">
-            <input
-              type="checkbox"
-              id="priceLowToHigh"
-              checked={sortOptions.priceLowToHigh}
-              onChange={() => handleSortOptionChange("priceLowToHigh")}
-            />
-            <label htmlFor="priceLowToHigh" className="ml-2">
-              Fiyat Düşükten Yükseğe
-            </label>
+    <div>
+      <Navbar
+        searchProducts={searchProducts}
+        walletAmount={1000}
+        userName="Kerem"
+      />
+      <div className="flex flex-wrap">
+        <div className="w-full md:w-1/4 p-4">
+          {/* Sort By Kartı */}
+          <div className="bg-white p-4 rounded shadow">
+            <h2 className="text-lg font-semibold mb-2">Sort By</h2>
+            <div className="mb-2">
+              <input
+                type="checkbox"
+                id="priceLowToHigh"
+                checked={sortOptions.priceLowToHigh}
+                onChange={() => handleSortOptionChange("priceLowToHigh")}
+              />
+              <label htmlFor="priceLowToHigh" className="ml-2">
+                Fiyat Düşükten Yükseğe
+              </label>
+            </div>
+            <div className="mb-2">
+              <input
+                type="checkbox"
+                id="priceHighToLow"
+                checked={sortOptions.priceHighToLow}
+                onChange={() => handleSortOptionChange("priceHighToLow")}
+              />
+              <label htmlFor="priceHighToLow" className="ml-2">
+                Fiyat Yüksekten Düşüğe
+              </label>
+            </div>
+            <div className="mb-2">
+              <input
+                type="checkbox"
+                id="dateNewToOld"
+                checked={sortOptions.dateNewToOld}
+                onChange={() => handleSortOptionChange("dateNewToOld")}
+              />
+              <label htmlFor="dateNewToOld" className="ml-2">
+                Yeniden Eskiye
+              </label>
+            </div>
+            <div className="mb-2">
+              <input
+                type="checkbox"
+                id="dateOldToNew"
+                checked={sortOptions.dateOldToNew}
+                onChange={() => handleSortOptionChange("dateOldToNew")}
+              />
+              <label htmlFor="dateOldToNew" className="ml-2">
+                Eskiden Yeniye
+              </label>
+            </div>
           </div>
-          <div className="mb-2">
-            <input
-              type="checkbox"
-              id="priceHighToLow"
-              checked={sortOptions.priceHighToLow}
-              onChange={() => handleSortOptionChange("priceHighToLow")}
-            />
-            <label htmlFor="priceHighToLow" className="ml-2">
-              Fiyat Yüksekten Düşüğe
-            </label>
-          </div>
-          <div className="mb-2">
-            <input
-              type="checkbox"
-              id="dateNewToOld"
-              checked={sortOptions.dateNewToOld}
-              onChange={() => handleSortOptionChange("dateNewToOld")}
-            />
-            <label htmlFor="dateNewToOld" className="ml-2">
-              Yeniden Eskiye
-            </label>
-          </div>
-          <div className="mb-2">
-            <input
-              type="checkbox"
-              id="dateOldToNew"
-              checked={sortOptions.dateOldToNew}
-              onChange={() => handleSortOptionChange("dateOldToNew")}
-            />
-            <label htmlFor="dateOldToNew" className="ml-2">
-              Eskiden Yeniye
-            </label>
-          </div>
-        </div>
 
-        {/* Markalar Kartı */}
-        <div className="bg-white p-4 rounded shadow mt-4">
-          <h2 className="text-lg font-semibold mb-2">Brands</h2>
-          <div className="overflow-y-auto max-h-36">
-            {products.map((product) => (
-              <div key={product.id} className="mb-2">
-                <input
-                  type="checkbox"
-                  id={product.name}
-                  name={product.name}
-                  value={product.name}
-                  checked={filterCriteria.selectedBrands.includes(product.name)}
-                  onChange={() => handleBrandSelect(product.name)}
-                />
-                <label htmlFor={product.name} className="ml-2">
-                  {product.name}
-                </label>
-              </div>
-            ))}
+          {/* Markalar Kartı */}
+          <div className="bg-white p-4 rounded shadow mt-4">
+            <h2 className="text-lg font-semibold mb-2">Brands</h2>
+            <div className="overflow-y-auto max-h-36">
+              {products.map((product) => (
+                <div key={product.id} className="mb-2">
+                  <input
+                    type="checkbox"
+                    id={product.brand}
+                    name={product.brand}
+                    value={product.brand}
+                    checked={filterCriteria.selectedBrands.includes(
+                      product.brand
+                    )}
+                    onChange={() => handleBrandSelect(product.brand)}
+                  />
+                  <label htmlFor={product.brand} className="ml-2">
+                    {product.brand}
+                  </label>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Modeller Kartı */}
-        <div className="bg-white p-4 rounded shadow mt-4">
-          <h2 className="text-lg font-semibold mb-2">Model</h2>
-          <div className="overflow-y-auto max-h-36">
-            {Array.from(new Set(products.map((product) => product.model))).map(
-              (model) => (
+          {/* Modeller Kartı */}
+          <div className="bg-white p-4 rounded shadow mt-4">
+            <h2 className="text-lg font-semibold mb-2">Model</h2>
+            <div className="overflow-y-auto max-h-36">
+              {Array.from(
+                new Set(products.map((product) => product.model))
+              ).map((model) => (
                 <div key={model} className="mb-2">
                   <input
                     type="radio"
@@ -214,36 +261,47 @@ const ProductList = () => {
                     {model}
                   </label>
                 </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Diğer filtre kartları burada ekleyin */}
+        </div>
+
+        <div className="w-full md:w-3/4 p-4">
+          {/* Ürünlerin Listesi ve Sayfalama burada */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {currentProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
+          </div>
+          <TotalPrices selectedProducts={selectedProducts} />
+          <SelectedProduct
+            selectedProducts={selectedProducts}
+            handleQuantityChange={handleQuantityChange}
+          />
+          <div className="flex justify-center mt-4">
+            {Array.from(
+              { length: Math.ceil(filteredProducts.length / productsPerPage) },
+              (_, i) => (
+                <button
+                  key={i}
+                  onClick={() => paginate(i + 1)}
+                  className={`mx-2 p-2 rounded-full ${
+                    i + 1 === currentPage
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-300"
+                  }`}
+                >
+                  {i + 1}
+                </button>
               )
             )}
           </div>
-        </div>
-      </div>
-
-      <div className="w-full md:w-3/4 p-4">
-        {/* Ürünlerin Listesi ve Sayfalama burada */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {currentProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-        <div className="flex justify-center mt-4">
-          {Array.from(
-            { length: Math.ceil(filteredProducts.length / productsPerPage) },
-            (_, i) => (
-              <button
-                key={i}
-                onClick={() => paginate(i + 1)}
-                className={`mx-2 p-2 rounded-full ${
-                  i + 1 === currentPage
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-300"
-                }`}
-              >
-                {i + 1}
-              </button>
-            )
-          )}
         </div>
       </div>
     </div>
