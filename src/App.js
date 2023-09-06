@@ -1,16 +1,26 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // React Router v6'da Routes kullanılır
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ProductList from "./pages/ProductList.jsx";
-import ProductDetails from "./pages/ProductDetails.jsx"; // Yeni component'inizi eklediğinizden emin olun
+import ProductDetails from "./pages/ProductDetails.jsx";
 
 function App() {
+  const [selectedProducts, setSelectedProducts] = useState([]);
+
   return (
     <>
       <Router>
         <div className="App">
           <Routes>
-            <Route path="/" element={<ProductList />} />{" "}
-            <Route path="/products/:productId" element={<ProductDetails />} />{" "}
+            <Route
+              path="/"
+              element={
+                <ProductList
+                  selectedProducts={selectedProducts}
+                  setSelectedProducts={setSelectedProducts}
+                />
+              }
+            />
+            <Route path="/products/:productId" element={<ProductDetails />} />
           </Routes>
         </div>
       </Router>

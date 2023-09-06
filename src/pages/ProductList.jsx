@@ -157,7 +157,8 @@ const ProductList = () => {
         walletAmount={1000}
         userName="Kerem"
       />
-      <div className="flex flex-wrap">
+
+      <div className="flex flex-row">
         <div className="w-full md:w-1/4 p-4">
           {/* Sort By Kartı */}
           <div className="bg-white p-4 rounded shadow w-[220px]">
@@ -257,7 +258,7 @@ const ProductList = () => {
           </div>
         </div>
 
-        <div className="ml-[-200px] md:w-3/4 p-0">
+        <div className="ml-[-200px] w-[1100px]">
           {/* Ürünlerin Listesi ve Sayfalama burada */}
           <div className="grid grid-cols-1 md:grid-cols-4  ">
             {currentProducts.map((product) => (
@@ -268,14 +269,13 @@ const ProductList = () => {
               />
             ))}
           </div>
-
+        </div>
+        <div>
           <SelectedProduct
             selectedProducts={selectedProducts}
             handleQuantityChange={handleQuantityChange}
           />
           <TotalPrices selectedProducts={selectedProducts} />
-
-          {/* </div> */}
         </div>
       </div>
 
