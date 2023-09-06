@@ -50,6 +50,6 @@ Sonucu görmek icin tarayıcınızla [http://localhost:3000] açın.
 
 6- Spesifik bölümler yorum satırlarıyla belirtilmiştir.
 
-
-
 ```
+
+Önemli not: API'nin içindeki ürünlerin, ürün ismi ile ürün markası uyuşmuyor. Bu sebeple anasayfadaki "Brands" filtesi ürünleri isimlerine göre filtreleme geliştirdim. Böylelikle mantıksal olarak doğru çalışmış oldu. Ürün modellerinde de uyuşmazlık söz konusu. API'yi incelerseniz ürün modellerinin de yine aynı şekilde ürünün ismiyle ve markasıya uyuşmazlık yaşadığını görebilirsiniz. "Models" filtesinde ürün modeline göre filteleniyor. Bu tamamen API'deki mantık hatasından meydana gelen bir özellik. Değerlendirme yaparken bunları göz önünde bulundurursanız sevinirim.
