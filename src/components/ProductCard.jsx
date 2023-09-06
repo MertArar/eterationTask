@@ -7,7 +7,6 @@ const ProductCard = ({ product, onAddToCart }) => {
       <div className="flex flex-col items-center">
         <Link to={`/products/${product.id}`}>
           {" "}
-          {/* Add Link to the product details page */}
           <img
             src={product.image}
             alt={product.name}
