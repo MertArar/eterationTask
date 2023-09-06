@@ -20,7 +20,15 @@ function App() {
                 />
               }
             />
-            <Route path="/products/:productId" element={<ProductDetails />} />
+            <Route
+              path="/products/:productId"
+              element={
+                <ProductDetails
+                  selectedProducts={selectedProducts}
+                  setSelectedProducts={setSelectedProducts}
+                />
+              }
+            />
           </Routes>
         </div>
       </Router>

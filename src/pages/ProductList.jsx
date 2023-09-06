@@ -158,8 +158,8 @@ const ProductList = () => {
         userName="Kerem"
       />
 
-      <div className="flex flex-row">
-        <div className="w-full md:w-1/4 p-4">
+      <div className="flex flex-col md:justify-center lg:flex-row md:flex-row">
+        <div className="w-full md:w-1/4 md:justify-center p-4">
           {/* Sort By Kartı */}
           <div className="bg-white p-4 rounded shadow w-[220px]">
             <h2 className="text-lg font-semibold mb-2">Sort By</h2>
@@ -258,7 +258,7 @@ const ProductList = () => {
           </div>
         </div>
 
-        <div className="ml-[-200px] w-[1100px]">
+        <div className="md:ml-[-200px]  w-[1100px]">
           {/* Ürünlerin Listesi ve Sayfalama burada */}
           <div className="grid grid-cols-1 md:grid-cols-4  ">
             {currentProducts.map((product) => (
@@ -279,7 +279,7 @@ const ProductList = () => {
         </div>
       </div>
 
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center mt-10 mb-10">
         {Array.from(
           { length: Math.ceil(filteredProducts.length / productsPerPage) },
           (_, i) => (

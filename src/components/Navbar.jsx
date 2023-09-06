@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 
+import { AiOutlineUser, AiOutlineWallet } from "react-icons/ai";
+
+import { Link } from "react-router-dom";
+
 const Navbar = ({ searchProducts, walletAmount, userName }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -14,7 +18,9 @@ const Navbar = ({ searchProducts, walletAmount, userName }) => {
   return (
     <nav className="bg-[#2A59FE] p-4 px-24 text-white flex justify-between items-center">
       <div className="flex items-center">
-        <span className="text-3xl font-bold">Eteration</span>
+        <Link to="/">
+          <span className="text-3xl font-bold">Eteration</span>
+        </Link>
         <div className="ml-4">
           <input
             type="text"
@@ -26,11 +32,11 @@ const Navbar = ({ searchProducts, walletAmount, userName }) => {
         </div>
       </div>
       <div className="flex items-center">
-        <div className="mr-4">
-          <i className="fas fa-wallet"></i> {walletAmount} USD
+        <div className="flex items-center mr-4">
+          <AiOutlineWallet /> {walletAmount} USD
         </div>
-        <div className="flex items-center">
-          <i className="fas fa-user mr-2"></i>
+        <div className="flex items-center m-2">
+          <AiOutlineUser />
           {userName}
         </div>
       </div>
