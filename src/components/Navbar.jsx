@@ -4,6 +4,10 @@ import { AiOutlineUser, AiOutlineWallet } from "react-icons/ai";
 
 import { Link } from "react-router-dom";
 
+{
+  /* Navbar Functions */
+}
+
 const Navbar = ({ searchProducts, walletAmount, userName }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
