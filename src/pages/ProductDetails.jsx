@@ -58,15 +58,15 @@ const ProductDetails = ({ selectedProducts, setSelectedProducts }) => {
   return (
     <>
       <Navbar walletAmount="117.000" userName="Kerem" />
-      <div className="flex flex-row justify-center items-center">
-        <div className="flex flex-row justify-center items-center mt-24 p-8 w-[1420px] bg-white shadow-lg">
+      <div className="flex lg:flex-row flex-col justify-center items-center">
+        <div className="flex flex-col lg:flex-row justify-center items-center mt-24 p-8 w-[1420px] bg-white shadow-lg">
           <img
             src={product.image}
             alt={product.name}
             className="my-4 bg-cover w-[580px] h-[520px]"
           />
 
-          <div className="flex flex-col p-8 ml-24">
+          <div className="flex flex-row md:flex-col p-8 ml-24">
             <h2 className="text-3xl font-normal ">{product.name}</h2>
             <p className="text-blue-500 mt-4 text-2xl mb-8">${product.price}</p>
             <div className="flex flex-col justify-center items-center">
