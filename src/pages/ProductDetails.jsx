@@ -57,7 +57,10 @@ const ProductDetails = ({ selectedProducts, setSelectedProducts }) => {
 
   return (
     <>
+      {/* Navbar */}
       <Navbar walletAmount="117.000" userName="Kerem" />
+
+      {/* Product Detail */}
       <div className="flex lg:flex-row flex-col justify-center items-center">
         <div className="flex flex-col lg:flex-row justify-center items-center mt-24 p-8 w-[1420px] bg-white shadow-lg">
           <img
@@ -82,6 +85,7 @@ const ProductDetails = ({ selectedProducts, setSelectedProducts }) => {
           </div>
         </div>
 
+        {/* Cart Components */}
         <div className="flex flex-col justify-center items-center ml-10">
           <SelectedProduct
             selectedProducts={selectedProducts}
