@@ -24,7 +24,7 @@ const ProductList = ({ selectedProducts, setSelectedProducts }) => {
     endDate: null,
     minPrice: null,
     maxPrice: null,
-    selectedNames: [], // Değişen isimler için yeni bir state ekledik.
+    selectedNames: [],
   });
 
   const [selectedModel, setSelectedModel] = useState("");
@@ -67,16 +67,14 @@ const ProductList = ({ selectedProducts, setSelectedProducts }) => {
     const filterProducts = () => {
       let filtered = products;
 
-      // Diğer filtreleme kriterleri burada...
-
-      // Modeli filtrele
+      // Modeli filtreleme
       if (selectedModel) {
         filtered = filtered.filter(
           (product) => product.model === selectedModel
         );
       }
 
-      // Seçilen isimlere göre filtrele
+      // Brand  filtreleme
       if (filterCriteria.selectedNames.length > 0) {
         filtered = filtered.filter((product) =>
           filterCriteria.selectedNames.includes(product.name)
@@ -256,7 +254,7 @@ const ProductList = ({ selectedProducts, setSelectedProducts }) => {
         </div>
 
         <div className="md:ml-[-200px]  w-[1100px]">
-          {/* Ürünlerin Listesi ve Sayfalama burada */}
+          {/* Ürün Listesi */}
           <div className="grid grid-cols-1 md:grid-cols-4  ">
             {currentProducts.map((product) => (
               <ProductCard
