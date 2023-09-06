@@ -156,8 +156,8 @@ const ProductList = ({ selectedProducts, setSelectedProducts }) => {
       <div className="flex flex-col md:justify-center lg:flex-row md:flex-row">
         <div className="w-full md:w-1/4 md:justify-center p-4">
           {/* Sort By Kartı */}
+          <h2 className="text-sm font-semibold mb-2">Sort By</h2>
           <div className="bg-white p-4 rounded shadow w-[220px]">
-            <h2 className="text-lg font-semibold mb-2">Sort By</h2>
             <div className="mb-2">
               <input
                 type="checkbox"
@@ -205,8 +205,8 @@ const ProductList = ({ selectedProducts, setSelectedProducts }) => {
           </div>
 
           {/* Ürün İsimleri Kartı */}
+          <h2 className="text-sm font-semibold mt-6">Brands</h2>
           <div className="bg-white p-4 rounded shadow mt-4 w-[220px]">
-            <h2 className="text-lg font-semibold mb-2">Brands</h2>
             <div className="overflow-y-auto max-h-36">
               {products.map((product) => (
                 <div key={product.id} className="mb-2">
@@ -229,15 +229,15 @@ const ProductList = ({ selectedProducts, setSelectedProducts }) => {
           </div>
 
           {/* Modeller Kartı */}
+          <h2 className="text-sm font-semibold mt-6">Model</h2>
           <div className="bg-white p-4 rounded shadow mt-4 w-[220px]">
-            <h2 className="text-lg font-semibold mb-2">Model</h2>
             <div className="overflow-y-auto max-h-36">
               {Array.from(
                 new Set(products.map((product) => product.model))
               ).map((model) => (
                 <div key={model} className="mb-2">
                   <input
-                    type="radio"
+                    type="checkbox"
                     id={model}
                     name="model"
                     value={model}

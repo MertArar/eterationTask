@@ -63,23 +63,25 @@ const ProductDetails = ({ selectedProducts, setSelectedProducts }) => {
           <img
             src={product.image}
             alt={product.name}
-            className="my-4 bg-cover w-[580px] h-[520px]"
+            className="my-4 bg-cover w-[680px] h-[520px]"
           />
 
-          <div className="flex flex-row md:flex-col p-8 ml-24">
+          <div className="flex flex-row md:flex-col p-8 ">
             <h2 className="text-3xl font-normal ">{product.name}</h2>
             <p className="text-blue-500 mt-4 text-2xl mb-8">${product.price}</p>
-            <div className="flex flex-col justify-center items-center">
+
+            <div className="flex flex-col justify-center items-center md:justify-center md:items-center">
               <button
-                className="bg-[#2A59FE] text-white p-2 rounded-[4px] w-[420px] flex items-center justify-center"
+                className="bg-[#2A59FE] text-white p-2 rounded-[4px] w-[220px] lg:w-[420px] flex items-center justify-center"
                 onClick={() => handleAddToCart(product)}
               >
                 Add To Cart
               </button>
-              <p className="text-gray-700 p-14">{product.description}</p>
+              <p className="text-gray-700  p-14">{product.description}</p>
             </div>
           </div>
         </div>
+
         <div className="flex flex-col justify-center items-center ml-10">
           <SelectedProduct
             selectedProducts={selectedProducts}
