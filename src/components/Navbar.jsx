@@ -10,8 +10,7 @@ const Navbar = ({ searchProducts, walletAmount, userName }) => {
   const handleInputChange = (e) => {
     const newSearchTerm = e.target.value;
     setSearchTerm(newSearchTerm);
-    // Aşağıdaki satırda, searchProducts işlevini çağırarak arama sonuçlarını güncellemelisiniz.
-    // Örneğin, searchProducts(newSearchTerm) şeklinde kullanarak arama sonuçlarını güncelleyebilirsiniz.
+
     searchProducts(newSearchTerm);
   };
 
@@ -27,7 +26,7 @@ const Navbar = ({ searchProducts, walletAmount, userName }) => {
             placeholder="Search..."
             className="bg-white-70 ml-10 w-[400px] text-black p-2 rounded-sm "
             value={searchTerm}
-            onChange={handleInputChange} // Arama kutusunun değeri değiştiğinde çağrılacak işlevi belirtin
+            onChange={handleInputChange}
           />
         </div>
       </div>

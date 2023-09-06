@@ -7,32 +7,30 @@ function App() {
   const [selectedProducts, setSelectedProducts] = useState([]);
 
   return (
-    <>
-      <Router>
-        <div className="App">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <ProductList
-                  selectedProducts={selectedProducts}
-                  setSelectedProducts={setSelectedProducts}
-                />
-              }
-            />
-            <Route
-              path="/products/:productId"
-              element={
-                <ProductDetails
-                  selectedProducts={selectedProducts}
-                  setSelectedProducts={setSelectedProducts}
-                />
-              }
-            />
-          </Routes>
-        </div>
-      </Router>
-    </>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProductList
+                selectedProducts={selectedProducts}
+                setSelectedProducts={setSelectedProducts}
+              />
+            }
+          />
+          <Route
+            path="/products/:productId"
+            element={
+              <ProductDetails
+                selectedProducts={selectedProducts}
+                setSelectedProducts={setSelectedProducts}
+              />
+            }
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

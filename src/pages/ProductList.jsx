@@ -4,8 +4,9 @@ import ProductCard from "../components/ProductCard";
 import Navbar from "../components/Navbar";
 import SelectedProduct from "../components/SelectedProduct";
 import TotalPrices from "../components/TotalPrice";
+import { Link } from "react-router-dom";
 
-const ProductList = () => {
+const ProductList = ({ selectedProducts, setSelectedProducts }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,8 +28,6 @@ const ProductList = () => {
   });
 
   const [selectedModel, setSelectedModel] = useState("");
-
-  const [selectedProducts, setSelectedProducts] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -140,10 +139,8 @@ const ProductList = () => {
     );
 
     if (selectedProductIndex === -1) {
-      // Ürün seçili değilse, yeni bir öğe olarak ekleyin
       setSelectedProducts([...selectedProducts, { ...product, quantity: 1 }]);
     } else {
-      // Ürün zaten seçiliyse, miktarını artırın
       const updatedSelectedProducts = [...selectedProducts];
       updatedSelectedProducts[selectedProductIndex].quantity += 1;
       setSelectedProducts(updatedSelectedProducts);
@@ -154,7 +151,7 @@ const ProductList = () => {
     <div>
       <Navbar
         searchProducts={searchProducts}
-        walletAmount={1000}
+        walletAmount="117.000"
         userName="Kerem"
       />
 

@@ -16,7 +16,10 @@ const SelectedProduct = ({ selectedProducts, handleQuantityChange }) => {
                   <button
                     className="px-4 py-1 bg-[#f3f3f6] text-[#616b8a] font-bold rounded"
                     onClick={() =>
-                      handleQuantityChange(product, product.quantity - 1)
+                      handleQuantityChange(
+                        product,
+                        product.quantity > 0 ? product.quantity - 1 : 0
+                      )
                     }
                   >
                     -

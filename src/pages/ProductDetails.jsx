@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import SelectedProduct from "../components/SelectedProduct";
 import TotalPrices from "../components/TotalPrice";
-
 import Navbar from "../components/Navbar";
-
 import axios from "axios";
 
 const API_URL = "https://5fc9346b2af77700165ae514.mockapi.io/products";
 
-const ProductDetails = ({}) => {
+const ProductDetails = ({ selectedProducts, setSelectedProducts }) => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
-  const [selectedProducts, setSelectedProducts] = useState([]);
   const [cartUpdated, setCartUpdated] = useState(false);
 
   useEffect(() => {
@@ -55,14 +51,13 @@ const ProductDetails = ({}) => {
     setCartUpdated((prevCartUpdated) => !prevCartUpdated);
   };
 
-  // Conditional rendering
   if (!product) {
     return <div>Loading...</div>;
   }
 
   return (
     <>
-      <Navbar walletAmount={1000} userName="Kerem" />
+      <Navbar walletAmount="117.000" userName="Kerem" />
       <div className="flex flex-row justify-center items-center">
         <div className="flex flex-row justify-center items-center mt-24 p-8 w-[1420px] bg-white shadow-lg">
           <img
