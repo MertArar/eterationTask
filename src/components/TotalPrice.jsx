@@ -1,5 +1,9 @@
 import React from "react";
 
+{
+  /* Total Price Func. */
+}
+
 const TotalPrices = ({ selectedProducts }) => {
   const calculateTotalPrice = () => {
     let total = 0;
