@@ -9,7 +9,7 @@ const SelectedProduct = ({ selectedProducts, handleQuantityChange }) => {
             <div key={product.id} className="mb-2">
               <div className="flex items-center">
                 <div className="flex-grow">
-                  <p>{product.name}</p>
+                  <p className="font-semibold">{product.name}</p>
                   <p className="text-[#2A59FE] font-bold">${product.price}</p>
                 </div>
                 <div className="flex-none">
