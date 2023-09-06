@@ -147,28 +147,43 @@ const ProductList = ({ selectedProducts, setSelectedProducts }) => {
 
   return (
     <div>
+      {/* Navbar */}
       <Navbar
         searchProducts={searchProducts}
         walletAmount="117.000"
         userName="Kerem"
       />
 
+      {/* Main Page */}
+
       <div className="flex flex-col md:justify-center lg:flex-row md:flex-row">
         <div className="w-full md:w-1/4 md:justify-center p-4">
-          {/* Sort By Kartı */}
+          {/* Sort By */}
           <h2 className="text-sm font-semibold mb-2">Sort By</h2>
           <div className="bg-white p-4 rounded shadow w-[220px]">
             <div className="mb-2">
               <input
                 type="checkbox"
-                id="priceLowToHigh"
-                checked={sortOptions.priceLowToHigh}
-                onChange={() => handleSortOptionChange("priceLowToHigh")}
+                id="dateOldToNew"
+                checked={sortOptions.dateOldToNew}
+                onChange={() => handleSortOptionChange("dateOldToNew")}
               />
-              <label htmlFor="priceLowToHigh" className="ml-2">
-                Price low to high
+              <label htmlFor="dateOldToNew" className="ml-2">
+                Old to New
               </label>
             </div>
+            <div className="mb-2">
+              <input
+                type="checkbox"
+                id="dateNewToOld"
+                checked={sortOptions.dateNewToOld}
+                onChange={() => handleSortOptionChange("dateNewToOld")}
+              />
+              <label htmlFor="dateNewToOld" className="ml-2">
+                New to Old
+              </label>
+            </div>
+
             <div className="mb-2">
               <input
                 type="checkbox"
@@ -183,28 +198,17 @@ const ProductList = ({ selectedProducts, setSelectedProducts }) => {
             <div className="mb-2">
               <input
                 type="checkbox"
-                id="dateNewToOld"
-                checked={sortOptions.dateNewToOld}
-                onChange={() => handleSortOptionChange("dateNewToOld")}
+                id="priceLowToHigh"
+                checked={sortOptions.priceLowToHigh}
+                onChange={() => handleSortOptionChange("priceLowToHigh")}
               />
-              <label htmlFor="dateNewToOld" className="ml-2">
-                New to Old
-              </label>
-            </div>
-            <div className="mb-2">
-              <input
-                type="checkbox"
-                id="dateOldToNew"
-                checked={sortOptions.dateOldToNew}
-                onChange={() => handleSortOptionChange("dateOldToNew")}
-              />
-              <label htmlFor="dateOldToNew" className="ml-2">
-                Old to New
+              <label htmlFor="priceLowToHigh" className="ml-2">
+                Price low to high
               </label>
             </div>
           </div>
 
-          {/* Ürün İsimleri Kartı */}
+          {/* Filter by Name */}
           <h2 className="text-sm font-semibold mt-6">Brands</h2>
           <div className="bg-white p-4 rounded shadow mt-4 w-[220px]">
             <div className="overflow-y-auto max-h-36">
@@ -228,7 +232,7 @@ const ProductList = ({ selectedProducts, setSelectedProducts }) => {
             </div>
           </div>
 
-          {/* Modeller Kartı */}
+          {/* Filter by Model */}
           <h2 className="text-sm font-semibold mt-6">Model</h2>
           <div className="bg-white p-4 rounded shadow mt-4 w-[220px]">
             <div className="overflow-y-auto max-h-36">
@@ -253,8 +257,8 @@ const ProductList = ({ selectedProducts, setSelectedProducts }) => {
           </div>
         </div>
 
+        {/* Product List */}
         <div className="md:ml-[-200px]  w-[1100px]">
-          {/* Ürün Listesi */}
           <div className="grid grid-cols-1 md:grid-cols-4  ">
             {currentProducts.map((product) => (
               <ProductCard
@@ -266,6 +270,7 @@ const ProductList = ({ selectedProducts, setSelectedProducts }) => {
           </div>
         </div>
         <div>
+          {/* Cart Components */}
           <SelectedProduct
             selectedProducts={selectedProducts}
             handleQuantityChange={handleQuantityChange}
@@ -274,6 +279,7 @@ const ProductList = ({ selectedProducts, setSelectedProducts }) => {
         </div>
       </div>
 
+      {/* Pagination */}
       <div className="flex justify-center mt-10 mb-10">
         {Array.from(
           { length: Math.ceil(filteredProducts.length / productsPerPage) },
